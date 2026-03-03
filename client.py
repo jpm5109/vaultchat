@@ -1,79 +1,81 @@
 import socket
 import threading
-from cryptography.hazmat.primitives.asymmetric import rsa, padding
-from cryptography.hazmat.primitives import serialization, hashes
+from cryptography.fernet import Fernet
 
-# Generate keys
-private_key = rsa.generate_private_key(
-    public_exponent=65537,
-    key_size=2048
-)
+# Client Configuration
+HOST = '127.0.0.1'
+PORT = 55555
 
-public_key = private_key.public_key()
+# Encryption Key (Must match server's SHARED_KEY)
+SHARED_KEY = b'7_WzY-B8K3-Xq1u4vHqW_E0-m8y5-Z6x1n3vA9uB2c8='
+cipher = Fernet(SHARED_KEY)
 
-public_pem = public_key.public_bytes(
-    encoding=serialization.Encoding.PEM,
-    format=serialization.PublicFormat.SubjectPublicKeyInfo
-)
+# Terminal Colors
+COLOR_RESET = "\033[0m"
+COLOR_CYAN = "\033[96m"
+COLOR_GREEN = "\033[92m"
+COLOR_RED = "\033[91m"
 
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(("127.0.0.1", 5555))
-
-user_id = input("Enter your ID: ")
-client.send(f"ID|{user_id}".encode())
-client.send(b"KEY|" + public_pem)
-
-receiver_public_key = None
-
-def receive():
-    global receiver_public_key
-    while True:
+class ChatClient:
+    def __init__(self):
+        self.nickname = input("Choose your nickname: ")
+        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        
         try:
-            data = client.recv(4096)
-            print("Data received:", data)   
+            self.client.connect((HOST, PORT))
+        except ConnectionRefusedError:
+            print(f"{COLOR_RED}[ERROR] Could not connect to server at {HOST}:{PORT}{COLOR_RESET}")
+            exit()
 
-            if b"-----BEGIN PUBLIC KEY-----" in data:
-                uid, pk = data.split(b"||")
-                receiver_public_key = serialization.load_pem_public_key(pk)
-                print(f"Received public key from {uid.decode()}")
+    def receive(self):
+        """Thread function to handle incoming messages."""
+        while True:
+            try:
+                message = self.client.recv(4096)
+                if not message:
+                    break
+                
+                # Check for handshake keyword
+                if message.decode('utf-8', errors='ignore') == 'NICK':
+                    self.client.send(self.nickname.encode('utf-8'))
+                else:
+                    # Decrypt and display message
+                    decrypted_message = cipher.decrypt(message).decode('utf-8')
+                    print(f"\r{decrypted_message}\n{COLOR_CYAN}You: {COLOR_RESET}", end="")
+            except Exception as e:
+                print(f"\n{COLOR_RED}[DISCONNECTED] Connection to server lost.{COLOR_RESET}")
+                self.client.close()
+                break
 
-            else:
-                """decrypted = private_key.decrypt(
-                    data,
-                    padding.OAEP(
-                        mgf=padding.MGF1(algorithm=hashes.SHA256()),
-                        algorithm=hashes.SHA256(),
-                        label=None
-                    )
-                )
-                print("\nMessage:", decrypted.decode())"""
+    def write(self):
+        """Function to handle user input and encryption."""
+        print(f"{COLOR_GREEN}Joined the chat! Type your message below.{COLOR_RESET}")
+        while True:
+            try:
+                text = input(f"{COLOR_CYAN}You: {COLOR_RESET}")
+                if text.lower() == '/quit':
+                    self.client.close()
+                    break
+                
+                # Format: "Nickname: Message"
+                full_message = f"{self.nickname}: {text}"
+                # Encrypt the entire string
+                encrypted_message = cipher.encrypt(full_message.encode('utf-8'))
+                self.client.send(encrypted_message)
+            except EOFError:
+                break
+            except Exception as e:
+                print(f"{COLOR_RED}[ERROR] Message could not be sent.{COLOR_RESET}")
+                break
 
-                message = data.decode()
+    def start(self):
+        # Start threads
+        receive_thread = threading.Thread(target=self.receive)
+        receive_thread.start()
 
-                if message.startswith("FROM|"):
-                    _, sender_id, msg = message.split("|", 2)
-                    print(f"\nMessage from {sender_id}: {msg}")
-        except:
-            break
+        write_thread = threading.Thread(target=self.write)
+        write_thread.start()
 
-threading.Thread(target=receive).start()
-
-while True:
-    """msg = input("")
-    if receiver_public_key:
-        encrypted = receiver_public_key.encrypt(
-            msg.encode(),
-            padding.OAEP(
-                mgf=padding.MGF1(algorithm=hashes.SHA256()),
-                algorithm=hashes.SHA256(),
-                label=None
-            )
-        )
-
-        receiver_id = input("Send to (ID): ").ljust(20)
-        client.send(receiver_id.encode() + encrypted)"""
-    receiver_id = input("Send to (ID): ")
-    msg = input("Message: ")
-    
-    full_message = f"MSG|{receiver_id}|{msg}"
-    client.send(full_message.encode())
+if __name__ == "__main__":
+    client = ChatClient()
+    client.start()
