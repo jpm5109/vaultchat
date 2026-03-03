@@ -48,7 +48,7 @@ VaultChat/
 │   ├── package.json        # Node dependencies
 │   ├── vite.config.js      # Vite build configuration
 │   ├── .env.example        # Environment template
-│   └── package-lock.json   # Tailwind CSS config
+│   └── package-lock.json   # npm deps lockfile
 │
 ├── README.md               # This file
 ├── DEPLOYMENT.md           # Production deployment guide
