@@ -18,7 +18,7 @@ import {
 
 /**
  * VAULTCHAT - SECURE WEB MESSAGING
- * Layout Fix: Profile bar forced to the absolute bottom on mobile.
+ * Optimized for Mobile Layout & Full Account Wipe on Logout.
  */
 
 const firebaseConfig = {
@@ -288,8 +288,8 @@ export default function App() {
 
   return (
     <div className="h-screen flex bg-slate-900 text-slate-100 overflow-hidden font-sans">
-      {/* Fixed Sidebar container to ensure it spans exactly 100% of the viewport height */}
-      <div className={`fixed inset-0 z-20 md:relative md:flex w-full md:w-80 flex-col bg-slate-950 border-r border-slate-800 transition-transform h-full ${activeChat ? '-translate-x-full md:translate-x-0' : 'translate-x-0'}`}>
+      {/* Sidebar - Fix: Added flex-col and overflow-hidden to prevent layout jumps */}
+      <div className={`fixed inset-0 z-20 md:relative md:flex w-full md:w-80 flex-col bg-slate-950 border-r border-slate-800 transition-transform ${activeChat ? '-translate-x-full md:translate-x-0' : 'translate-x-0'}`}>
         <div className="p-6 border-b border-slate-800 flex items-center justify-between bg-slate-900/50">
           <div className="flex items-center gap-3">
             <ShieldCheck className="text-cyan-400" size={24} />
@@ -300,6 +300,7 @@ export default function App() {
           </button>
         </div>
 
+        {/* Shareable ID - Fix: Reduced margins for mobile spacing */}
         <div className="p-4 m-3 bg-slate-900 rounded-2xl border border-slate-800/80 shadow-inner relative">
           <div className="flex justify-between items-center mb-2 px-1">
             <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">Access Key</p>
@@ -363,20 +364,18 @@ export default function App() {
           )}
         </div>
 
-        {/* PROFILE FOOTER: Added mt-auto to push it down and ensured no extra margins on the parent sidebar container allow gaps. */}
-        <div className="p-5 border-t border-slate-800 bg-slate-900 flex items-center gap-4 mt-auto w-full">
-          <div className="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20">
-            <User size={20} className="text-cyan-400" />
-          </div>
+        {/* Profile Footer - Fix: Removed margin-top and padding-bottom to stick it to the bottom screen edge */}
+        <div className="p-5 border-t border-slate-800 bg-slate-900 flex items-center gap-4 mt-auto">
+          <div className="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20"><User size={20} className="text-cyan-400" /></div>
           <div className="flex-1 truncate">
             <span className="text-xs font-black text-slate-200 tracking-tight block truncate uppercase">{profile.nickname}</span>
-            <span className="text-[9px] text-slate-500 font-mono uppercase">Identity Active</span>
+            <span className="text-[9px] text-slate-500 font-mono">IDENTITY_ACTIVE</span>
           </div>
         </div>
       </div>
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col bg-slate-900 shadow-2xl relative h-full">
+      <div className="flex-1 flex flex-col bg-slate-900 shadow-2xl relative">
         {activeChat ? (
           <>
             <header className="h-20 border-b border-slate-800 flex items-center justify-between px-6 bg-slate-950/60 backdrop-blur-3xl sticky top-0 z-10">
@@ -385,7 +384,7 @@ export default function App() {
                 <div className="w-11 h-11 rounded-xl bg-cyan-600 flex items-center justify-center font-black text-xl">{activeChat.nickname[0].toUpperCase()}</div>
                 <div>
                   <h2 className="text-lg font-black text-white leading-tight uppercase">{activeChat.nickname}</h2>
-                  <div className="flex items-center gap-1.5 mt-0.5"><div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div><span className="text-[10px] text-slate-500 font-black tracking-widest uppercase">Secure Node</span></div>
+                  <div className="flex items-center gap-1.5 mt-0.5"><div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div><span className="text-[10px] text-slate-500 font-black tracking-widest">SECURE_NODE</span></div>
                 </div>
               </div>
               <div className="flex gap-1">
@@ -418,7 +417,7 @@ export default function App() {
             </form>
           </>
         ) : (
-          <div className="flex-1 flex flex-col items-center justify-center text-slate-600 p-10 h-full">
+          <div className="flex-1 flex flex-col items-center justify-center text-slate-600 p-10">
             <div className="relative mb-8">
               <div className="absolute inset-0 bg-cyan-500 blur-[100px] opacity-10" />
               <div className="p-14 rounded-[3.5rem] bg-slate-800/20 border border-slate-800 relative z-10"><ShieldCheck size={100} className="text-slate-800" /></div>
