@@ -30,9 +30,31 @@
 
 ---
 
+## [1.0.1] - 2026-03-05 (Web Version Security Update)
+
+### Added (Web Version)
+- Anti-screenshot protection (PrintScreen blocking)
+- Anti-copy security (keyboard shortcuts disabled for Ctrl+C, Ctrl+X)
+- Developer tools prevention (F12, Ctrl+Shift+I, Ctrl+J, Ctrl+U blocking)
+- Auto-blur on window focus loss (15px blur filter)
+- Account wipe on logout (full user data deletion)
+- Enhanced security event listeners
+
+### Enhanced
+- Security tier classification: Anti-Screenshot & Anti-Copy enabled
+- Improved message privacy with comprehensive screen protection
+- Better developer protection against inspection and code viewing
+- More robust logout process with complete data erasure
+
+### Documentation
+- Updated SECURITY.md with new protection features
+- Updated README.md feature list with security enhancements
+
+---
+
 ## Future Releases
 
-### [1.1.0] - Planned
+### [1.2.0] - Planned
 - [ ] End-to-end encryption for web version
 - [ ] Message reactions
 - [ ] Typing indicators
@@ -48,5 +70,5 @@
 
 ---
 
-**Current Version: 1.0.0**
-**Last Updated: March 3, 2026**
+**Current Version: 1.0.1**
+**Last Updated: March 5, 2026**

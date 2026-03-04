@@ -65,6 +65,35 @@ Both users can read chat history
 - No end-to-end encryption
 - Authentication based on browser storage
 
+#### Enhanced Security Features (Web Version 1.1+)
+The web version now includes advanced client-side security protections:
+
+- **Anti-Screenshot Protection**: Blocks PrintScreen and screenshot tools
+  - Detects PrintScreen key and clears clipboard
+  - Prevents screen capture attempts
+  
+- **Anti-Copy Security**: Disables copy/cut functionality
+  - Blocks Ctrl+C, Ctrl+X keyboard shortcuts
+  - Prevents copy-paste of sensitive messages
+  - Shows "Copy Restricted" security warning
+
+- **Developer Tools Blocking**: Prevents inspection and debugging
+  - Blocks F12 (DevTools)
+  - Blocks Ctrl+Shift+I (Inspector)
+  - Blocks Ctrl+Shift+J (Console)
+  - Blocks Ctrl+Shift+C (Element Picker)
+  - Blocks Ctrl+U (View Source)
+
+- **Auto-Blur on Window Loss**: Automatically blurs content when unfocused
+  - Applies 15px blur filter when window loses focus
+  - Removes blur immediately when window regains focus
+  - Prevents shoulder-surfing and preview captures
+
+- **Account Wipe on Logout**: Complete data deletion
+  - Full user account erasure on sign-out
+  - All associated data removed from Firestore
+  - Clean session termination
+
 ---
 
 ## ⚠️ Critical Security Recommendations

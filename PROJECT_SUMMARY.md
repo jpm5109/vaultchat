@@ -76,6 +76,11 @@ vaultchat/
 - **Database**: Firestore with collection-level security rules
 - **Transport**: HTTPS-only connections
 - **Data**: Encrypted at rest by Google (data center security)
+- **Anti-Screenshot**: Blocks PrintScreen and screenshot attempts
+- **Anti-Copy**: Disables Ctrl+C and Ctrl+X keyboard shortcuts
+- **Developer Tools Blocking**: Prevents F12, Inspector, Console, View Source
+- **Auto-Blur on Blur**: Screen blurs when window loses focus (15px blur)
+- **Account Wipe**: Complete data deletion on logout
 
 ### Security Best Practices Documented
 - ✓ Key generation and rotation procedures
@@ -170,6 +175,12 @@ chmod +x setup.sh
 - Message history management
 - Responsive design (mobile-friendly)
 - Dark theme with animations
+- **Security Enhancements:**
+  - Anti-screenshot protection (PrintScreen blocking)
+  - Anti-copy security (Ctrl+C/X disabled)
+  - Developer tools blocking (F12, Inspector, etc.)
+  - Auto-blur on window focus loss
+  - Account wipe on logout
 
 ---
 

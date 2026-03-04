@@ -28,6 +28,11 @@ A professional-grade, end-to-end encrypted chat system with **dual deployment op
 - **Friend Management**: Accept/reject connection requests
 - **Secure Channel Wiping**: Purge chat histories from both ends
 - **Modern UI**: Sleek dark-themed interface with animations
+- **Anti-Screenshot Protection**: Blocks screenshots and PrintScreen
+- **Anti-Copy Security**: Disables copy/cut keyboard shortcuts
+- **Developer Tools Blocking**: Prevents F12, Inspect Element, and console access
+- **Screen Blur on Blur**: Auto-blurs when window loses focus
+- **Account Wipe on Logout**: Full account data deletion on sign-out
 
 ---
 
@@ -149,6 +154,11 @@ npm run build
 - **Firebase Rules**: Data isolated per user (collection-level security)
 - **Message Storage**: Plaintext storage (messages visible to both users)
 - **Authentication**: Anonymous Firebase Auth (no account needed)
+- **Anti-Screenshot Protection**: Blocks screenshot and PrintScreen attempts
+- **Anti-Copy Security**: Prevents copy/cut keyboard shortcuts (Ctrl+C, Ctrl+X)
+- **Developer Tools Blocking**: Disables F12, Ctrl+Shift+I, Ctrl+J, View Source
+- **Auto-Blur on Focus Loss**: Screen automatically blurs when window loses focus
+- **Account Wipe on Logout**: Full user data deletion on sign-out
 
 **⚠️ IMPORTANT SECURITY NOTES:**
 1. **Python Version**: Change the `SHARED_KEY` in both `server.py` and `client.py` before deployment
